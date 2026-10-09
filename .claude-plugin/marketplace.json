@@ -1,0 +1,13 @@
+{
+	"name": "lifehackett-kanban",
+	"owner": {
+		"name": "lifehackett"
+	},
+	"plugins": [
+		{
+			"name": "kanban",
+			"source": "./",
+			"description": "A text-based kanban board in your repo, operated by Claude."
+		}
+	]
+}

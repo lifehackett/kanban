@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+// Entry point for the kanban plugin CLI. Kept extensionless (it lands on PATH as
+// `kanban`), so it hands off to the ESM implementation via dynamic import.
+import('../lib/cli.mjs');
