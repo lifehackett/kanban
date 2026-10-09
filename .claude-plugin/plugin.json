@@ -1,6 +1,6 @@
 {
 	"name": "kanban",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A text-based kanban board in your repo: markdown tickets with validated frontmatter, a skill for operating the board (review, groom, new, start, done), and a zero-dependency `kanban` CLI.",
 	"author": {
 		"name": "lifehackett"

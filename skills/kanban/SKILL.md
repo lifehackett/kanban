@@ -1,6 +1,6 @@
 ---
 name: kanban
-description: Manage the project's text-based kanban board under kanban/ (columns backlog/ready/in-progress/done). Use when asked to review the backlog, surface candidates to promote to ready, groom/refine a ticket toward Ready, create a ticket, start or complete a ticket, move a ticket between columns, show the board, or set up a new board. Tickets are markdown files with schema-validated YAML frontmatter.
+description: Manage the project's text-based kanban board under kanban/ (columns backlog/ready/in-progress/done). Use when asked to review the backlog, surface candidates to promote to ready, groom/refine a ticket toward Ready, create a ticket, start or complete a ticket, move a ticket between columns, show the board, or set up a new board or its git pre-commit hook. Tickets are markdown files with schema-validated YAML frontmatter.
 allowed-tools:
   - Bash(kanban board*)
   - Bash(kanban show *)
@@ -19,8 +19,8 @@ you operate the board_.
 All reading goes through the `kanban` CLI (shipped by this plugin, on your PATH).
 If `kanban` isn't found, fall back to `"${CLAUDE_PLUGIN_ROOT}/bin/kanban"`.
 
-If the repo has **no `kanban/` directory**, offer to create one with `kanban init`
-(run at the repo root) — don't hand-build the structure.
+If the repo has **no `kanban/` directory**, offer to set one up (see **setup**
+below) — don't hand-build the structure.
 
 ## Ground rules
 
@@ -77,6 +77,28 @@ description:
 4. **No match** → say so; offer the closest titles.
 
 ## Verbs
+
+### setup
+
+"Set up a kanban board" / "install the kanban git hook." Run from the repo root:
+
+1. `kanban init` — scaffolds `kanban/` (the four column dirs, `README.md`,
+   `_template.md`). Safe to re-run: it never overwrites existing files. Skip it
+   if the board already exists and the user only asked for the hook.
+2. Offer the git pre-commit hook, which validates staged tickets on every commit
+   (catching hand-edits, not just your writes). It's per clone — `.git/hooks` isn't
+   version-controlled — so a fresh clone of an existing board needs it too. On
+   yes: `kanban install-git-hook`.
+   - If it reports an existing `pre-commit` hook, **don't `--force` on your own**.
+     Read the existing hook and show it to the user. If it's an older kanban hook,
+     or the user says to replace it, re-run with `--force`. Otherwise merge
+     `kanban install-git-hook --print` into the existing hook with the user's
+     approval.
+   - If the write is refused (e.g. a sandbox blocks `.git/hooks`), give the user
+     the command to run themselves, using the absolute path (their own shell may
+     not have the plugin on PATH):
+     `! "${CLAUDE_PLUGIN_ROOT}/bin/kanban" install-git-hook`.
+3. Suggest committing `kanban/` (but don't commit unless asked).
 
 ### review
 
